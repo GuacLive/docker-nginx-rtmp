@@ -1,9 +1,9 @@
-FROM alpine:latest
+FROM alpine@sha256:8c03bb07a531c53ad7d0f6e7041b64d81f99c6e493cb39abba56d956b40eacbc
 
 LABEL maintainer="datagutt <datagutt@lekanger.no>"
 
-ENV NGINX_VERSION=1.13.12
-ENV NGINX_RTMP_VERSION=1.2.3
+ENV NGINX_VERSION=1.15.1
+ENV NGINX_RTMP_VERSION=1.2.4
 
 RUN apk  --no-cache add \
 		git			\
