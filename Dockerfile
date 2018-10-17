@@ -1,17 +1,16 @@
-FROM alpine@sha256:8c03bb07a531c53ad7d0f6e7041b64d81f99c6e493cb39abba56d956b40eacbc
+FROM alpine@sha256:68c39584cd9308df35b566b907d895c8b20d232b438d67b437cf5503ac3f23f6
 
 LABEL maintainer="datagutt <datagutt@lekanger.no>"
 
-ENV NGINX_VERSION=1.15.1
-ENV NGINX_RTMP_VERSION=1.2.4
+ENV NGINX_VERSION=1.15.5
+ENV NGINX_RTMP_VERSION=master
 
 RUN apk  --no-cache add \
-		git			\
-		gcc			\
-		binutils-libs		\
+		git				\
+		gcc				\
 		binutils		\
-		gmp			\
-		isl			\
+		gmp				\
+		isl				\
 		libgomp			\
 		libatomic		\
 		libgcc			\
@@ -21,7 +20,7 @@ RUN apk  --no-cache add \
 		mpfr3			\
 		mpc1			\
 		libstdc++		\
-		ca-certificates		\
+		ca-certificates	\
 		libssh2			\
 		expat			\
 		pcre			\
@@ -35,22 +34,16 @@ RUN apk  --no-cache add \
 
 RUN	cd /tmp \
 	&& curl --remote-name http://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz \
-	&& git clone https://github.com/winshining/nginx-http-flv-module.git -b v${NGINX_RTMP_VERSION} \
+	&& git clone https://github.com/GuacLive/BLSS.git -b ${NGINX_RTMP_VERSION} \
 	&& tar xzf nginx-${NGINX_VERSION}.tar.gz \
 	&& cd nginx-${NGINX_VERSION} \
 	&& ./configure \
 		--prefix=/opt/nginx \
 		--with-http_ssl_module \
-		--add-module=../nginx-http-flv-module \
-	&& make \
+		--add-module=../BLSS \
+	&& make CFLAGS="-Wimplicit-fallthrough=0" \
 	&& make install
 
-FROM alpine:latest
-RUN apk  --no-cache add \
-	openssl \
-	pcre
-
-COPY --from=0 /opt/nginx /opt/nginx
 COPY nginx.conf /opt/nginx/conf/nginx.conf
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
