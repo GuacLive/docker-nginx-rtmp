@@ -2,7 +2,7 @@ FROM alpine@sha256:68c39584cd9308df35b566b907d895c8b20d232b438d67b437cf5503ac3f2
 
 LABEL maintainer="datagutt <datagutt@lekanger.no>"
 
-ENV NGINX_VERSION=1.15.5
+ENV NGINX_VERSION=1.15.7
 ENV NGINX_RTMP_VERSION=master
 
 RUN apk  --no-cache add \
