@@ -1,8 +1,8 @@
-FROM alpine@sha256:68c39584cd9308df35b566b907d895c8b20d232b438d67b437cf5503ac3f23f6
+FROM alfg/ffmpeg:snapshot
 
 LABEL maintainer="datagutt <datagutt@lekanger.no>"
 
-ENV NGINX_VERSION=1.15.8
+ENV NGINX_VERSION=1.15.9
 ENV NGINX_RTMP_VERSION=master
 
 RUN apk  --no-cache add \
@@ -41,7 +41,7 @@ RUN	cd /tmp \
 		--prefix=/opt/nginx \
 		--with-http_ssl_module \
 		--add-module=../BLSS \
-	&& make CFLAGS="-Wimplicit-fallthrough=0" \
+	&& make \
 	&& make install
 
 COPY nginx.conf /opt/nginx/conf/nginx.conf
