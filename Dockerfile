@@ -45,10 +45,12 @@ RUN	cd /tmp \
 	&& make install
 
 COPY nginx.conf /opt/nginx/conf/nginx.conf
+COPY transcode.sh /usr/local/bin/transcode.sh
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 RUN ln -sf /dev/stdout /opt/nginx/logs/access.log \
-	&& ln -sf /dev/stderr /opt/nginx/logs/error.log
+	&& ln -sf /dev/stderr /opt/nginx/logs/error.log \
+	&& ln -sf /dev/stderr /opt/nginx/logs/transcode.log
 
 EXPOSE 1935 8080
 
